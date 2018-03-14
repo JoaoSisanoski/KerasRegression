@@ -5,22 +5,23 @@ from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
-dataframe = pd.read_csv("housing.csv", header=None)
+dataframe = pd.read_csv("housing.csv", delim_whitespace=True, header=None)
 dataset = dataframe.values
-# split into input (X) and output (Y) variables
+
 X = dataset[:,0:13]
 Y = dataset[:,13]
-seed = 7
 sc = StandardScaler()
 X = sc.fit_transform(X)
 
+scy = StandardScaler()
+Y = scy.fit_transform(Y.reshape(-1, 1))
 # define wider model
 def wider_model():
 	# create model
 	model = Sequential()
 	model.add(Dense(output_dim = 7, input_dim=13, kernel_initializer='normal', activation='relu'))
 	model.add(Dense(output_dim = 7, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(1, kernel_initializer='normal'))
+	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 	model.compile(loss='mean_squared_error', optimizer='adam')
 	return model
 
