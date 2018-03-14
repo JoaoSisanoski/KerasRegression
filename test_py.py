@@ -21,12 +21,12 @@ def wider_model():
 	model = Sequential()
 	model.add(Dense(output_dim = 7, input_dim=13, kernel_initializer='normal', activation='relu'))
 	model.add(Dense(output_dim = 7, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+	model.add(Dense(1, kernel_initializer='normal'))
 	model.compile(loss='mean_squared_error', optimizer='adam')
 	return model
 
 regressor = KerasRegressor(build_fn=wider_model, epochs=100, batch_size=5)
-parameters = {'batch_size': [5, 32, 64], 'epochs': [100, 500]}
+parameters = {'batch_size': [5, 32, 64, 128], 'epochs': [100, 500, 1000]}
 grid_search = GridSearchCV(estimator=regressor,
                            param_grid=parameters,
                            scoring='neg_mean_squared_error',
